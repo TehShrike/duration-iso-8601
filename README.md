@@ -11,7 +11,7 @@ npm install @tehshrike/duration-iso-8601
 ```
 
 ```
-const parse = require('duration-iso-8601')
+const parse = require('@tehshrike/duration-iso-8601')
 ```
 
 # Examples
