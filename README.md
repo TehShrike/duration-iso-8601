@@ -1,4 +1,4 @@
-# duration-iso-8601
+# @tehshrike/duration-iso-8601
 
 Parse ISO 8601 Duration(PnYnMnDTnHnMnS syntax)
 
