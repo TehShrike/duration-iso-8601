@@ -4,7 +4,7 @@
   "description": "Parse ISO 8601 Duration(PnYnMnDTnHnMnS syntax)",
   "main": "index.js",
   "scripts": {
-    "test": "jest && npm run test:readme",
+    "test": "node test.js | tap-exit-code && npm run test:readme",
     "test:readme": "jsmd ./README.md"
   },
   "repository": {
@@ -24,7 +24,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^20.0.4",
-    "jsmd": "^1.0.2"
+    "jsmd": "^1.0.2",
+    "tap-exit-code": "^2.0.0",
+    "zora": "^4.0.0"
   }
 }

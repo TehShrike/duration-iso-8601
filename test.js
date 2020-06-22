@@ -1,75 +1,74 @@
-const parse = require('./index');
+const parse = require('./index')
+const { test } = require('zora')
 
-describe('duration-iso-8601', () => {
-  it('should convert every part', () => {
-    expect(parse('P5Y')).toEqual({
-      year: 5,
-    });
-    expect(parse('P11M')).toEqual({
-      month: 11,
-    });
-    expect(parse('P238D')).toEqual({
-      day: 238,
-    });
-    expect(parse('PT15H')).toEqual({
-      hour: 15,
-    });
-    expect(parse('PT56M')).toEqual({
-      minute: 56,
-    });
-    expect(parse('PT384S')).toEqual({
-      second: 384,
-    });
-    expect(parse('P18Y29,4M5DT36.66H1M289S')).toEqual({
-      year: 18,
-      month: 29.4,
-      day: 5,
-      hour: 36.66,
-      minute: 1,
-      second: 289,
-    });
-    expect(parse('P1Y30DT15M39S')).toEqual({
-      year: 1,
-      day: 30,
-      minute: 15,
-      second: 39,
-    });
-  });
+test('should convert every part', t => {
+  t.deepEqual(parse('P5Y'), {
+    year: 5,
+  })
+  t.deepEqual(parse('P11M'), {
+    month: 11,
+  })
+  t.deepEqual(parse('P238D'), {
+    day: 238,
+  })
+  t.deepEqual(parse('PT15H'), {
+    hour: 15,
+  })
+  t.deepEqual(parse('PT56M'), {
+    minute: 56,
+  })
+  t.deepEqual(parse('PT384S'), {
+    second: 384,
+  })
+  t.deepEqual(parse('P18Y29,4M5DT36.66H1M289S'), {
+    year: 18,
+    month: 29.4,
+    day: 5,
+    hour: 36.66,
+    minute: 1,
+    second: 289,
+  })
+  t.deepEqual(parse('P1Y30DT15M39S'), {
+    year: 1,
+    day: 30,
+    minute: 15,
+    second: 39,
+  })
+})
 
-  it('should handle HMS missing T', () => {
-    expect(parse('P23H')).toBe(null);
-    expect(parse('P8S')).toBe(null);
-    expect(parse('P3Y5S')).toBe(null);
-  });
+test('should handle HMS missing T', t => {
+  t.equal(parse('P23H'), null)
+  t.equal(parse('P8S'), null)
+  t.equal(parse('P3Y5S'), null)
+})
 
-  it('should handle . , - in number part', () => {
-    expect(parse('P82.9Y')).toEqual({
-      year: 82.9,
-    });
-    expect(parse('P8,99Y')).toEqual({
-      year: 8.99,
-    });
-    expect(parse('P35,46Y')).toEqual({
-      year: 35.46,
-    });
-    expect(parse('PT-50S')).toBe(null);
-  });
+test('should handle . , - in number part', t => {
+  t.deepEqual(parse('P82.9Y'), {
+    year: 82.9,
+  })
+  t.deepEqual(parse('P8,99Y'), {
+    year: 8.99,
+  })
+  t.deepEqual(parse('P35,46Y'), {
+    year: 35.46,
+  })
+  t.equal(parse('PT-50S'), null)
+})
 
-  it('should handle non number in number part', () => {
-    expect(parse('P8sdwe!@Y')).toBe(null);
-    expect(parse('PT^li98S')).toBe(null);
-    expect(parse('PDTS')).toBe(null);
-  });
+test('should handle non number in number part', t => {
+  t.equal(parse('P8sdwe!@Y'), null)
+  t.equal(parse('PT^li98S'), null)
+  t.equal(parse('PDTS'), null)
+})
 
-  it('should handle invalid input', () => {
-    expect(parse('PT12.H')).toBe(null);
-    expect(parse('P2M8M9M')).toBe(null);
-    expect(parse('P3Ynlwkqejq$5D')).toBe(null);
-    expect(parse('P1Mqwe!213DT18M9S')).toBe(null);
-    expect(parse('P87(*&(bfwefh')).toBe(null);
-    expect(parse('P)(*)(HKJGH12*(')).toBe(null);
-    expect(parse('ieurht834')).toBe(null);
-    expect(parse('^(*&*( qh2we')).toBe(null);
-    expect(parse('')).toBe(null);
-  });
-});
+test('should handle invalid input', t => {
+  t.equal(parse('PT12.H'), null)
+  t.equal(parse('P2M8M9M'), null)
+  t.equal(parse('P3Ynlwkqejq$5D'), null)
+  t.equal(parse('P1Mqwe!213DT18M9S'), null)
+  t.equal(parse('P87(*&(bfwefh'), null)
+  t.equal(parse('P)(*)(HKJGH12*('), null)
+  t.equal(parse('ieurht834'), null)
+  t.equal(parse('^(*&*( qh2we'), null)
+  t.equal(parse(''), null)
+})
