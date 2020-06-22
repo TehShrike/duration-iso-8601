@@ -1,11 +1,13 @@
-const numberRegExp = '\\d+(?:[\.,]\\d+)?'
-const durationRegExpS = `(?:(${numberRegExp})S)?)?`
-const durationRegExpTM = `(?:(${numberRegExp})M)?`
-const durationRegExpH = `(?:T(?:(${numberRegExp})H)?`
-const durationRegExpD = `(?:(${numberRegExp})D)?`
-const durationRegExpM = `(?:(${numberRegExp})M)?`
-const durationRegExpY = `(?:(${numberRegExp})Y)?`
-const durationRegExp = new RegExp(`^P${durationRegExpY}${durationRegExpM}${durationRegExpD}${durationRegExpH}${durationRegExpTM}${durationRegExpS}$`)
+const durationRegExp = /^P(?:(\d+(?:[\.,]\d+)?)Y)?(?:(\d+(?:[\.,]\d+)?)M)?(?:(\d+(?:[\.,]\d+)?)D)?(?:T(?:(\d+(?:[\.,]\d+)?)H)?(?:(\d+(?:[\.,]\d+)?)M)?(?:(\d+(?:[\.,]\d+)?)S)?)?$/
+
+const indexes = {
+  1: 'year',
+  2: 'month',
+  3: 'day',
+  4: 'hour',
+  5: 'minute',
+  6: 'second',
+}
 
 module.exports = (duration) => {
   const matchResult = duration.match(durationRegExp)
@@ -15,7 +17,6 @@ module.exports = (duration) => {
   }
 
   const durationResult = {}
-  let foundAnyValues = false
 
   for (let matchResultIndex = 1; matchResultIndex <= Math.min(matchResult.length, 6); matchResultIndex++) {
     if (matchResult[matchResultIndex] !== undefined) {
@@ -25,32 +26,11 @@ module.exports = (duration) => {
         return
       }
 
-      foundAnyValues = true
-
-      switch (matchResultIndex) {
-        case 1:
-          durationResult.year = value
-          break
-        case 2:
-          durationResult.month = value
-          break
-        case 3:
-          durationResult.day = value
-          break
-        case 4:
-          durationResult.hour = value
-          break
-        case 5:
-          durationResult.minute = value
-          break
-        case 6:
-          durationResult.second = value
-          break
-      }
+      durationResult[indexes[matchResultIndex]] = value
     }
   }
 
-  if (!foundAnyValues) {
+  if (Object.keys(durationResult) === 0) {
     return null
   }
 
