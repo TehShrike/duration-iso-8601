@@ -1,6 +1,6 @@
 {
   "name": "@tehshrike/duration-iso-8601",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Parse ISO 8601 Duration(PnYnMnDTnHnMnS syntax)",
   "main": "index.js",
   "scripts": {
